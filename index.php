@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="submit"><i class="fa-solid fa-right-to-bracket"></i> Entrar
                 </button>
                 <br>
-                <p><a href="#">Solicita aquí sus credenciales</a></p>
+                <p><a href="mailto:smarrod687a@isidrodearceneguiycarmona.es" target="_blank" rel="nooper noreferrer">Solicita aquí sus credenciales</a></p>
             </div>
         </form>
         <script>
