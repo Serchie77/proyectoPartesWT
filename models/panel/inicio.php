@@ -15,7 +15,7 @@ $dir = "imagen/";
 // # Faltaría incluir en la tabla el registro de la imagen en sí
 */
 ?>
-<!-- 
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -28,7 +28,7 @@ $dir = "imagen/";
     <link rel="stylesheet" href="/proyectoWT/assets/css/all.min.css">
 </head>
 
-<body> -->
+<body>
     <!-- contenedor principal INICIO-->
     <div class="container py-3">
 
@@ -36,6 +36,6 @@ $dir = "imagen/";
         <hr>
     </div>
     <script src="/proyectoWT/assets/js/bootstrap.bundle.min.js"></script>
-<!-- </body>
+</body>
 
-</html> -->
+</html>

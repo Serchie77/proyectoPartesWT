@@ -1,7 +1,7 @@
 <!-- Recuperamos la conexión BD -->
 <?php
 // Inicio de sesión
-// session_start();
+session_start();
 
 // Conexión a la base de datos
 require '../../config/conexion.php';
@@ -32,19 +32,20 @@ $dir = "imagen/";
     <!-- contenedor principal Clientes-->
 
     <div class="container py-3">
-
-        <h2 class="text-center">Clientes</h2>
-
+        <div class="card text-bg-info mb-3">
+            <span class="placeholder-wave col-12 placeholder-lg bg-primary">
+                <h2 class="card-header text-center text-light"><i class="fa-solid fa-briefcase"></i> Clientes</h2>
+            </span>
+        </div>
         <!-- Mensaje de advertencia -->
-        <hr>
         <?php
         if (isset($_SESSION['mensaje']) && isset($_SESSION['color'])) {
         ?>
 
-        <div class="alert alert-<?= $_SESSION['color']; ?> alert-dismissible fade show" role="alert">
-            <?= $_SESSION['mensaje'] ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+            <div class="alert alert-<?= $_SESSION['color']; ?> alert-dismissible fade show" role="alert">
+                <?= $_SESSION['mensaje'] ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
 
         <?php
             // Para que no salte una y otra vez!!
@@ -54,18 +55,14 @@ $dir = "imagen/";
 
         ?>
 
-        <!-- contenedor de la Tabla -->
-        <div class="row justify-content-start">
-            <!-- botón con referencia -->
-            <div class="col-auto">
-                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoModal"><i
-                        class="fa-solid fa-circle-plus"></i> Nuevo Cliente</a>
-            </div>
+        <!-- botón con referencia -->
+        <div class="d-grid col-3 mx-auto">
+            <a href="#" class="btn btn-outline-success p-1" data-bs-toggle="modal" data-bs-target="#nuevoClienteModal"><i class="fa-solid fa-circle-plus"></i> Agregar Nuevo Cliente</a>
         </div>
 
         <!-- Tabla para mostrar datos Cliente -->
         <div class="table-responsive-sm">
-            <table class="table table-sm table-striped table-over mt-4">
+            <table class="table table-sm table-over table-bordered mt-2">
                 <!-- cabecera de la Tabla -->
                 <thead class="table-dark">
                     <tr>
@@ -95,10 +92,10 @@ $dir = "imagen/";
 
                             <td>
                                 <a href='#' class='btn btn-sm btn-warning' data-bs-toggle='modal' 
-                                data-bs-target='#editaModal' data-bs-id='{$registro['idCliente']}'> <i class='fa-solid fa-pen-to-square'></i> Editar</a> 
+                                data-bs-target='#editarClienteModal' data-bs-id='{$registro['idCliente']}'> <i class='fa-solid fa-pen-to-square'></i> Editar</a> 
                         
                                 <a href='#' class='btn btn-sm btn-danger' data-bs-toggle='modal' 
-                                data-bs-target='#eliminaModal' data-bs-id='{$registro['idCliente']}'> <i class='fa-solid fa-trash'></i> Eliminar</a>
+                                data-bs-target='#eliminarClienteModal' data-bs-id='{$registro['idCliente']}'> <i class='fa-solid fa-trash'></i> Eliminar</a>
                             </td>
                         <tr>";
                     }
@@ -108,81 +105,70 @@ $dir = "imagen/";
             </table>
         </div>
 
-        <!-- consulta de la tabla Clientes -->
-        <?php
-        // Preparar la consulta SQL
-        $consulta = $conexionbd->prepare('SELECT * FROM clientes');
-        $consulta->execute();
-        $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
-        ?>
-
         <!-- inlusión del archivo donde está el elemento emergente del botón -->
         <?php
-        include 'nuevoModal.php';
-        include 'editaModal.php';
-        include 'eliminaModal.php';
+        include 'nuevoClienteModal.php';
+        include 'editarClienteModal.php';
+        include 'eliminarClienteModal.php';
         ?>
 
         <!-- evento para visualizar y ocultar -->
         <script>
-        // # limpiar datos
-        let nuevoModal = document.getElementById('nuevoModal')
-        // # editar el cliente
-        let editaModal = document.getElementById('editaModal')
-        // # eliminar el cliente
-        let eliminaModal = document.getElementById('eliminaModal')
+            // # limpiar datos
+            let nuevoClienteModal = document.getElementById('nuevoClienteModal')
+            // # editar el cliente
+            let editarClienteModal = document.getElementById('editarClienteModal')
+            // # eliminar el cliente
+            let eliminarClienteModal = document.getElementById('eliminarClienteModal')
 
-        // ## Evento para limpiar datos
-        nuevoModal.addEventListener('hide.bs.modal', event => {
+            // ## Evento para limpiar datos
+            nuevoClienteModal.addEventListener('hide.bs.modal', event => {})
 
-        })
+            // ## Evento para editar datos
+            editarClienteModal.addEventListener('shown.bs.modal', event => {
+                let button = event.relatedTarget
+                // # botón detectado como id # definirlo en la referencia botón tabla anterior
+                let id = button.getAttribute('data-bs-id')
+                // # para saber qué elemento debe ser editado # definido en editarClienteModal.php (div)
+                let inputId = editarClienteModal.querySelector('.modal-body #idCliente')
+                let inputNombre = editarClienteModal.querySelector('.modal-body #nombre')
+                let inputApellidos = editarClienteModal.querySelector('.modal-body #apellidos')
+                let inputEmail = editarClienteModal.querySelector('.modal-body #email')
+                let inputTelefono = editarClienteModal.querySelector('.modal-body #telefono')
+                let inputDireccion = editarClienteModal.querySelector('.modal-body #direccion')
+                let inputComentarios = editarClienteModal.querySelector('.modal-body #comentarios')
 
+                // Petición AJAX
+                let url = "seleccionarCliente.php"
+                let formData = new FormData()
+                formData.append('idCliente', id)
 
-        // ## Evento para editar datos
-        editaModal.addEventListener('shown.bs.modal', event => {
-            let button = event.relatedTarget
-            // # botón detectado como id # definirlo en la referencia botón tabla anterior
-            let id = button.getAttribute('data-bs-id')
-            // # para saber qué elemento debe ser editado # definido en editaModal.php (div)
-            let inputId = editaModal.querySelector('.modal-body #idCliente')
-            let inputNombre = editaModal.querySelector('.modal-body #nombre')
-            let inputApellidos = editaModal.querySelector('.modal-body #apellidos')
-            let inputEmail = editaModal.querySelector('.modal-body #email')
-            let inputTelefono = editaModal.querySelector('.modal-body #telefono')
-            let inputDireccion = editaModal.querySelector('.modal-body #direccion')
-            let inputComentarios = editaModal.querySelector('.modal-body #comentarios')
+                fetch(url, {
+                        method: "POST",
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        inputId.value = data.idCliente;
+                        inputNombre.value = data.nombre;
+                        inputApellidos.value = data.apellidos;
+                        inputEmail.value = data.email;
+                        inputTelefono.value = data.telefono;
+                        inputDireccion.value = data.direccion;
+                        inputComentarios.value = data.comentarios;
 
-            // Petición AJAX
-            let url = "getCliente.php"
-            let formData = new FormData()
-            formData.append('idCliente', id)
+                    })
+                    .catch(err => console.log(err))
+            })
 
-            fetch(url, {
-                    method: "POST",
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    inputId.value = data.idCliente;
-                    inputNombre.value = data.nombre;
-                    inputApellidos.value = data.apellidos;
-                    inputEmail.value = data.email;
-                    inputTelefono.value = data.telefono;
-                    inputDireccion.value = data.direccion;
-                    inputComentarios.value = data.comentarios;
+            // ## Evento para Eliminar ##
+            eliminarClienteModal.addEventListener('shown.bs.modal', event => {
+                let button = event.relatedTarget
+                // # botón detectado como id # definirlo en la referencia botón tabla anterior
+                let id = button.getAttribute('data-bs-id')
 
-                })
-                .catch(err => console.log(err))
-        })
-
-        // ## Evento para Eliminar ##
-        eliminaModal.addEventListener('shown.bs.modal', event => {
-            let button = event.relatedTarget
-            // # botón detectado como id # definirlo en la referencia botón tabla anterior
-            let id = button.getAttribute('data-bs-id')
-
-            eliminaModal.querySelector('.modal-footer #idCliente').value = id
-        })
+                eliminarClienteModal.querySelector('.modal-footer #idCliente').value = id
+            })
         </script>
 
     </div>
