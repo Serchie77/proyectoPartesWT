@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-05-2024 a las 20:57:11
+-- Tiempo de generación: 18-05-2024 a las 20:03:58
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -54,12 +54,11 @@ INSERT INTO `clientes` (`idCliente`, `nombre`, `apellidos`, `email`, `telefono`,
 
 CREATE TABLE `partes` (
   `idParte` int(11) NOT NULL,
-  `año` int(11) DEFAULT NULL,
   `fechaInicio` date DEFAULT NULL,
   `fechaFin` date DEFAULT NULL,
-  `totalHorasNormales` int(11) DEFAULT NULL,
-  `totalHorasExtras` int(11) DEFAULT NULL,
-  `horasViaje` int(11) DEFAULT NULL,
+  `totalHorasNormales` decimal(5,2) DEFAULT NULL,
+  `totalHorasExtras` decimal(5,2) DEFAULT NULL,
+  `horasViaje` decimal(5,2) DEFAULT NULL,
   `comentarios` text DEFAULT NULL,
   `idUsuario` int(11) DEFAULT NULL,
   `idProyecto` int(11) DEFAULT NULL
@@ -69,8 +68,8 @@ CREATE TABLE `partes` (
 -- Volcado de datos para la tabla `partes`
 --
 
-INSERT INTO `partes` (`idParte`, `año`, `fechaInicio`, `fechaFin`, `totalHorasNormales`, `totalHorasExtras`, `horasViaje`, `comentarios`, `idUsuario`, `idProyecto`) VALUES
-(1, 2024, '2024-04-21', NULL, NULL, NULL, 2, 'Realizar trabajos varios', 2, 1);
+INSERT INTO `partes` (`idParte`, `fechaInicio`, `fechaFin`, `totalHorasNormales`, `totalHorasExtras`, `horasViaje`, `comentarios`, `idUsuario`, `idProyecto`) VALUES
+(1, '2024-04-21', NULL, NULL, NULL, 2.00, 'Realizar trabajos varios', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -81,8 +80,8 @@ INSERT INTO `partes` (`idParte`, `año`, `fechaInicio`, `fechaFin`, `totalHorasN
 CREATE TABLE `parteshoras` (
   `idParteHora` int(11) NOT NULL,
   `fecha` date DEFAULT NULL,
-  `horasNormales` int(11) DEFAULT NULL,
-  `horasExtras` int(11) DEFAULT NULL,
+  `horasNormales` decimal(5,2) DEFAULT NULL,
+  `horasExtras` decimal(5,2) DEFAULT NULL,
   `idParte` int(11) NOT NULL,
   `idUsuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -92,7 +91,8 @@ CREATE TABLE `parteshoras` (
 --
 
 INSERT INTO `parteshoras` (`idParteHora`, `fecha`, `horasNormales`, `horasExtras`, `idParte`, `idUsuario`) VALUES
-(1, NULL, 8, NULL, 1, 2);
+(1, '2024-05-13', 8.00, 0.00, 1, 2),
+(2, '2024-05-14', 8.00, 1.00, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -114,7 +114,7 @@ CREATE TABLE `proyectos` (
 --
 
 INSERT INTO `proyectos` (`idProyecto`, `nombre`, `lugar`, `fechaInicio`, `fechaFin`, `idCliente`) VALUES
-(1, 'casa Pepe', 'calle Alfareros\r\nSevilla', '2024-04-14', NULL, 1);
+(1, 'casa Pepe', 'calle Alfareros de Sevilla', '2024-04-14', '0000-00-00', 1);
 
 -- --------------------------------------------------------
 
@@ -158,7 +158,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`idUsuario`, `usuario`, `password`, `nombre`, `apellidos`, `direccion`, `telefono`, `email`, `idRol`) VALUES
-(1, 'sergioadmin', 'cc4f3abf9b752533dcecd12049e71fdfc5f54c8c8d5cada48a70d120095c9c77', 'Sergio', 'Martínez Rodríguez', 'Calle 19,\r\n41620 Marchena,\r\nSevilla', '600123456', 'sergio@gmail.com', 1),
+(1, 'sergioadmin', 'cc4f3abf9b752533dcecd12049e71fdfc5f54c8c8d5cada48a70d120095c9c77', 'Sergio', 'Martínez Rodríguez', 'Calle 19 - 41620 Sevilla', '600123456', 'sergio@gmail.com', 1),
 (2, 'pepevema', '0ef3ed934c6b80c9e3eb60fe541026868115e949e985b09a2b5c40260336c0a5', 'Pepito', 'Vega Marín', 'Calle Alcantarilla, 102\r\n41002 Sevilla', '654123987', 'pepevema@gmail.com', 2),
 (3, 'manupegil', '65557960a2c2e25eed9b0c4f1f39508d2a1c2eca4c410712eb25e06e835e6cd4', 'Manuel', 'Pérez Gil', 'Calle Avendaño, 49\r\n04271 Lubrín\r\nAlmería', '766452718', 'mapegil@gmail.com', 2);
 
@@ -223,6 +223,12 @@ ALTER TABLE `clientes`
 --
 ALTER TABLE `partes`
   MODIFY `idParte` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `parteshoras`
+--
+ALTER TABLE `parteshoras`
+  MODIFY `idParteHora` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `proyectos`
