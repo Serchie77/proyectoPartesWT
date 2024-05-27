@@ -1,4 +1,3 @@
-<!-- Modal -->
 <div class="modal fade" id="eliminarProyectoModal" tabindex="-1" aria-labelledby="eliminarProyectoModalLabel" aria-hidden="true">
     <!-- modal-dialogo tipo sm (small)-->
     <div class="modal-dialog modal-sm">
@@ -9,23 +8,18 @@
             </div>
             <div class="modal-body">
                 ¿Desea realmente eliminarlo?
-                <div class="modal-footer">
-
-                    <!-- creamos el formulario para ELIMINAR de la BD -->
-                    <form action="eliminarProyecto.php" method="POST">
-                        <!-- creación id para saber qué registro se eliminará -->
-                        <input type="hidden" name="idProyecto" id="idProyecto">
-                        <!-- Botones -->
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i> Cancelar</button>
-                        <button type="submit" class="btn btn-success"><i class="fa-solid fa-eraser"></i>
-                            Confirmar</button>
-
-                    </form>
-
-                </div>
-
             </div>
-
+            <div class="modal-footer">
+                <!-- creamos el formulario para ELIMINAR de la BD -->
+                <form action="/proyectoWT/models/proyectos/eliminarProyecto.php" method="POST">
+                    <!-- creación id para saber qué registro se eliminará -->
+                    <input type="hidden" name="idProyecto" id="idProyecto">
+                    <!-- Botones -->
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i> Cancelar</button>
+                    <button type="submit" class="btn btn-success"><i class="fa-solid fa-eraser"></i>
+                        Confirmar</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>

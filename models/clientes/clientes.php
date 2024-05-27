@@ -1,147 +1,146 @@
 <!-- Recuperamos la conexión BD -->
 <?php
-// Inicio de sesión
-session_start();
+// Incluir el archivo de sesión
+require '../../sesion.php';
 
 // Conexión a la base de datos
 require '../../config/conexion.php';
 
-// # Traer los registros de la tabla
-$consultaCliente = $conexionbd->prepare("SELECT * FROM clientes");
-$consultaCliente->execute();
-/*
-// # Para mostrar la imagen o documento
-$dir = "imagen/";
-// # Faltaría incluir en la tabla el registro de la imagen en sí
-*/
+try {
+    // Traer los registros de la tabla
+    $consultaCliente = $conexionbd->prepare("SELECT * FROM clientes");
+    $consultaCliente->execute();
+} catch (PDOException $e) {
+    die("Error en la consulta: " . $e->getMessage());
+}
 ?>
 
-<!-- <!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WT | Clientes</title>
 
+    <!-- <link rel="stylesheet" href="/proyectoWT/assets/css/bootswatch-spacelab/bootstrap.min.css"> -->
     <link rel="stylesheet" href="/proyectoWT/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/proyectoWT/assets/css/all.min.css">
 </head>
 
-<body> -->
-    <!-- contenedor principal Clientes-->
+<header>
+    <?php
+    if ($_SESSION['rol'] == 1) {
 
-    <div class="container py-3">
-        <div class="card text-bg-info mb-3">
+        require_once('../headerAdmin.php');
+    } elseif ($_SESSION['rol'] == 2) {
+        require_once('../headerUser.php');
+    }
+    ?>
+</header>
+
+
+<body>
+    <div class="container py-4">
+        <!-- Mostrar mensaje de sesión -->
+        <?php if (isset($_SESSION['mensaje'])) : ?>
+            <div class="alert alert-<?php echo $_SESSION['color']; ?> alert-dismissible fade show" role="alert">
+                <?php echo $_SESSION['mensaje']; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <?php
+            // Elimina el mensaje de la sesión después de mostrarlo
+            unset($_SESSION['mensaje']);
+            unset($_SESSION['color']);
+            ?>
+        <?php endif; ?>
+
+        <div class="card mb-3 shadow-lg">
             <span class="placeholder-wave col-12 placeholder-lg bg-primary">
                 <h2 class="card-header text-center text-light"><i class="fa-solid fa-briefcase"></i> Clientes</h2>
             </span>
         </div>
-        <!-- Mensaje de advertencia -->
-        <?php
-        if (isset($_SESSION['mensaje']) && isset($_SESSION['color'])) {
-        ?>
-
-            <div class="alert alert-<?= $_SESSION['color']; ?> alert-dismissible fade show" role="alert">
-                <?= $_SESSION['mensaje'] ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-
-        <?php
-            // Para que no salte una y otra vez!!
-            unset($_SESSION['color']);
-            unset($_SESSION['mensaje']);
-        }
-
-        ?>
-
-        <!-- botón con referencia -->
+        <!-- botón con referencia - Restringido para no administradores-->
         <div class="d-grid col-3 mx-auto">
-            <a href="#" class="btn btn-outline-success p-1" data-bs-toggle="modal" data-bs-target="#nuevoClienteModal"><i class="fa-solid fa-circle-plus"></i> Agregar Nuevo Cliente</a>
+            <?php if ($_SESSION['rol'] == 1) : ?>
+                <a href="#" class="btn btn-outline-success p-1" data-bs-toggle="modal" data-bs-target="#nuevoClienteModal"><i class="fa-solid fa-circle-plus"></i> Agregar Nuevo Cliente</a>
+            <?php else : ?>
+                <button class='btn btn-outline-success p-1' onclick="alert('No tienes permisos, contacta con el administrador.'); return false;"><i class='fa-solid fa-circle-plus'></i> Agregar Nuevo Cliente</button>
+            <?php endif; ?>
         </div>
 
         <!-- Tabla para mostrar datos Cliente -->
         <div class="table-responsive-sm">
-            <table class="table table-sm table-over table-bordered mt-2">
+            <table class="table table-sm table-hover table-bordered mt-2" style="font-size: 0.8em;">
                 <!-- cabecera de la Tabla -->
                 <thead class="table-dark">
                     <tr>
                         <th>ID</th>
-                        <th>nombre</th>
-                        <th>apellidos</th>
-                        <th>email</th>
-                        <th>telefono</th>
-                        <th>dirección</th>
-                        <th>comentarios</th>
-                        <th>ACCIONES</th>
+                        <th>Nombre</th>
+                        <th>Apellidos</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Dirección</th>
+                        <th>Comentarios</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <!-- cuerpo de la Tabla -->
                 <tbody class="table-primary">
-                    <?php
-                    while ($registro = $consultaCliente->fetch()) {
-
-                        echo "<tr>
-                            <td class='table-dark'>{$registro['idCliente']}</td>
-                            <td>{$registro['nombre']}</td>
-                            <td>{$registro['apellidos']}</td>
-                            <td>{$registro['email']}</td>
-                            <td>{$registro['telefono']}</td>
-                            <td>{$registro['direccion']}</td>
-                            <td>{$registro['comentarios']}</td>
-
+                    <?php while ($registro = $consultaCliente->fetch(PDO::FETCH_ASSOC)) : ?>
+                        <tr>
+                            <td class="table-dark"><?= htmlspecialchars($registro['idCliente']); ?></td>
+                            <td><?= htmlspecialchars($registro['nombre']); ?></td>
+                            <td><?= htmlspecialchars($registro['apellidos']); ?></td>
+                            <td><?= htmlspecialchars($registro['email']); ?></td>
+                            <td><?= htmlspecialchars($registro['telefono']); ?></td>
+                            <td><?= htmlspecialchars($registro['direccion']); ?></td>
+                            <td><?= htmlspecialchars($registro['comentarios']); ?></td>
                             <td>
-                                <a href='#' class='btn btn-sm btn-warning' data-bs-toggle='modal' 
-                                data-bs-target='#editarClienteModal' data-bs-id='{$registro['idCliente']}'> <i class='fa-solid fa-pen-to-square'></i> Editar</a> 
-                        
-                                <a href='#' class='btn btn-sm btn-danger' data-bs-toggle='modal' 
-                                data-bs-target='#eliminarClienteModal' data-bs-id='{$registro['idCliente']}'> <i class='fa-solid fa-trash'></i> Eliminar</a>
+                                <?php if ($_SESSION['rol'] == 1) : ?>
+                                    <a href="#" class='btn btn-sm btn-warning' data-bs-toggle='modal' data-bs-target='#editarClienteModal' data-bs-id='<?= htmlspecialchars($registro['idCliente']); ?>'><i class='fa-solid fa-pen-to-square'></i></a>
+                                    <a href="#" class='btn btn-sm btn-danger' data-bs-toggle='modal' data-bs-target='#eliminarClienteModal' data-bs-id='<?= htmlspecialchars($registro['idCliente']); ?>'><i class='fa-solid fa-trash'></i> </a>
+                                <?php else : ?>
+                                    <button class='btn btn-sm btn-warning' onclick="alert('No tienes permisos, contacta con el administrador.'); return false;"><i class='fa-solid fa-pen-to-square'></i></button>
+                                    <button class='btn btn-sm btn-danger' onclick="alert('No tienes permisos, contacta con el administrador.'); return false;"><i class='fa-solid fa-trash'></i></button>
+                                <?php endif; ?>
                             </td>
-                        <tr>";
-                    }
-                    ?>
-
+                        </tr>
+                    <?php endwhile; ?>
                 </tbody>
             </table>
+
         </div>
 
-        <!-- inlusión del archivo donde está el elemento emergente del botón -->
-        <?php
-        include 'nuevoClienteModal.php';
-        include 'editarClienteModal.php';
-        include 'eliminarClienteModal.php';
-        ?>
+        <!-- Inclusión de los modales -->
+        <?php include 'nuevoClienteModal.php'; ?>
+        <?php include 'editarClienteModal.php'; ?>
+        <?php include 'eliminarClienteModal.php'; ?>
 
-        <!-- evento para visualizar y ocultar -->
+        <!-- Eventos para los modales -->
         <script>
-            // # limpiar datos
-            let nuevoClienteModal = document.getElementById('nuevoClienteModal')
-            // # editar el cliente
-            let editarClienteModal = document.getElementById('editarClienteModal')
-            // # eliminar el cliente
-            let eliminarClienteModal = document.getElementById('eliminarClienteModal')
+            let nuevoClienteModal = document.getElementById('nuevoClienteModal');
+            let editarClienteModal = document.getElementById('editarClienteModal');
+            let eliminarClienteModal = document.getElementById('eliminarClienteModal');
 
-            // ## Evento para limpiar datos
-            nuevoClienteModal.addEventListener('hide.bs.modal', event => {})
+            nuevoClienteModal.addEventListener('hide.bs.modal', event => {
+                // Código para limpiar los datos del modal
+            });
 
-            // ## Evento para editar datos
             editarClienteModal.addEventListener('shown.bs.modal', event => {
-                let button = event.relatedTarget
-                // # botón detectado como id # definirlo en la referencia botón tabla anterior
-                let id = button.getAttribute('data-bs-id')
-                // # para saber qué elemento debe ser editado # definido en editarClienteModal.php (div)
-                let inputId = editarClienteModal.querySelector('.modal-body #idCliente')
-                let inputNombre = editarClienteModal.querySelector('.modal-body #nombre')
-                let inputApellidos = editarClienteModal.querySelector('.modal-body #apellidos')
-                let inputEmail = editarClienteModal.querySelector('.modal-body #email')
-                let inputTelefono = editarClienteModal.querySelector('.modal-body #telefono')
-                let inputDireccion = editarClienteModal.querySelector('.modal-body #direccion')
-                let inputComentarios = editarClienteModal.querySelector('.modal-body #comentarios')
+                let button = event.relatedTarget;
+                let id = button.getAttribute('data-bs-id');
+                let inputId = editarClienteModal.querySelector('.modal-body #idCliente');
+                let inputNombre = editarClienteModal.querySelector('.modal-body #nombre');
+                let inputApellidos = editarClienteModal.querySelector('.modal-body #apellidos');
+                let inputEmail = editarClienteModal.querySelector('.modal-body #email');
+                let inputTelefono = editarClienteModal.querySelector('.modal-body #telefono');
+                let inputDireccion = editarClienteModal.querySelector('.modal-body #direccion');
+                let inputComentarios = editarClienteModal.querySelector('.modal-body #comentarios');
 
-                // Petición AJAX
-                let url = "seleccionarCliente.php"
-                let formData = new FormData()
-                formData.append('idCliente', id)
+                let url = "seleccionarCliente.php";
+                let formData = new FormData();
+                formData.append('idCliente', id);
 
                 fetch(url, {
                         method: "POST",
@@ -156,24 +155,24 @@ $dir = "imagen/";
                         inputTelefono.value = data.telefono;
                         inputDireccion.value = data.direccion;
                         inputComentarios.value = data.comentarios;
-
                     })
-                    .catch(err => console.log(err))
-            })
+                    .catch(err => console.log(err));
+            });
 
-            // ## Evento para Eliminar ##
             eliminarClienteModal.addEventListener('shown.bs.modal', event => {
-                let button = event.relatedTarget
-                // # botón detectado como id # definirlo en la referencia botón tabla anterior
-                let id = button.getAttribute('data-bs-id')
-
-                eliminarClienteModal.querySelector('.modal-footer #idCliente').value = id
-            })
+                let button = event.relatedTarget;
+                let id = button.getAttribute('data-bs-id');
+                eliminarClienteModal.querySelector('.modal-footer #idCliente').value = id;
+            });
         </script>
-
     </div>
 
+    <footer>
+        <?php
+        require_once('../footer.php');
+        ?>
+    </footer>
     <script src="/proyectoWT/assets/js/bootstrap.bundle.min.js"></script>
-<!-- </body>
+</body>
 
-</html> -->
+</html>

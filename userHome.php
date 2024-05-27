@@ -1,188 +1,273 @@
 <?php
 
-// session_start();
-require_once 'sesion.php';
+require 'sesion.php';
+require 'config/conexion.php';
+require 'consultaDatos.php';
 
-
-if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 2) {
-    header('Location: index.php');
-    exit();
+if (!isset($_SESSION['rol'])) {
+  header('Location: index.php');
+  exit();
 }
 // Obtener el usuario mediante sesión
 $usuario = $_SESSION['usuario'];
+
+
+// Obtener las cantidades totales de Clientes, Proyectos, Usuarios, etc
+$cantidadPartesUsuarios = contarPartesUsuarios($conexionbd, $idUsuario);
+$cantidadHorasUsuario = contarHorasUsuario($conexionbd, $idUsuario);
+$trabajadoresProyectos = obtenerProyectosConTrabajadores($conexionbd);
+
+
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- metadatos -->
-    <meta name="Autor" content="Sergio Martínez">
-    <meta name="Description" content="Elaboración de partes de trabajo para una empresa">
-    <meta name="keywords" content="HTML, CSS, PHP, JavaScript">
-
-    <title>Partes 2024 | WorkTrack</title>
-    <!-- Favicons -->
-    <link rel="icon" href="/proyectoWT/assets/img/Logo_WT.png" type="image/png">
-
-    <!-- GOOGLE FONTS -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Saira:ital,wght@0,100..900;1,100..900&display=swap"
-        rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-        rel="stylesheet">
-
-    <!-- <link rel="stylesheet" href="../assets/css/bootswatch-materia/bootstrap.min.css"> -->
-    <link rel="stylesheet" href="/proyectoWT/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/proyectoWT/assets/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="Autor" content="Sergio Martínez" />
+  <meta name="Description" content="Elaboración de partes de trabajo para una empresa" />
+  <meta name="keywords" content="HTML, CSS, PHP, JavaScript" />
+  <title>User Home | WorkTrack</title>
+  <!-- Favicons -->
+  <link rel="icon" href="/proyectoWT/assets/img/Logo_WT.png" type="image/png" />
+  <!-- GOOGLE FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+  <!-- FONTAWESOME & BOOTSTRAP -->
+  <link rel="stylesheet" href="/proyectoWT/assets/css/bootswatch-cerulean/bootstrap.min.css">
+  <link rel="stylesheet" href="/proyectoWT/assets/css/all.min.css" />
 </head>
-<script>
-// ## Función para cargar el contenido de INICIO
-function cargarContenidoInicio() {
-    // # Realizar una solicitud AJAX para obtener el contenido de la página de inicio
-    fetch('./models/panel/inicio.php')
-        .then(response => response.text())
-        .then(data => {
-            // Insertar el contenido en el contenedor dinámico
-            document.getElementById('contenido-dinamico').innerHTML = data;
-        })
-        .catch(error => console.error('Error al cargar el contenido de la página de inicio:', error));
-}
-</script>
+<!--  -->
+<style>
+  body {
+    font-family: 'Montserrat';
+    background: url(/proyectoWT/assets/img/FondoEdificio2.jpeg) no-repeat bottom fixed;
+    background-size: cover;
+  }
+
+  .bg-gradient-primary {
+    background: linear-gradient(to top, #007bff 0%, #0056b3 100%);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .bg-primary-footer {
+    background: linear-gradient(to bottom, #007bff 0%, #0056b3 100%);
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.3);
+  }
+</style>
 
 <body>
-    <!-- Barra de navegación -->
-    <nav class="navbar navbar-expand-md navbar-dark bg-primary">
-        <div class="container-fluid">
-            <div class="d-flex align-items-center">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler"
-                    aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <a class="navbar-brand" href="#" onclick="cargarContenidoInicio()">
-                    <img src="/proyectoWT/assets/img/Logo_WT.png" alt="Logo WorkTrack" width="60" height="60"
-                        class="d-inline-block">
-                    Inicio
-                </a>
+  <header class="navbar navbar-expand-md navbar-dark bd-navbar sticky-top bg-gradient-primary">
+    <div class="container-fluid">
+      <div class="d-flex align-items-center">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="/proyectoWT/userHome.php">
+          <img src="/proyectoWT/assets/img/Logo_WT.png" alt="Logo WorkTrack" width="60" height="60" class="d-inline-block" />
+          Inicio
+        </a>
+      </div>
+
+      <div class="collapse navbar-collapse justify-content-center" id="navbarToggler">
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link d-flex flex-column align-items-center text-white" href="/proyectoWT/models/clientes/clientes.php">
+              <i class="fa-solid fa-briefcase"></i>
+              Clientes
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link d-flex flex-column align-items-center text-white" href="/proyectoWT/models/proyectos/proyectos.php">
+              <i class="fa-solid fa-city"></i>
+              Proyectos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link d-flex flex-column align-items-center text-white" href="/proyectoWT/models/usuarios/usuarios.php">
+              <i class="fa-solid fa-users"></i>
+              Usuarios</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link d-flex flex-column align-items-center text-white" href="/proyectoWT/models/partes/partes.php">
+              <i class="fa-solid fa-calendar-days"></i>
+              Partes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link d-flex flex-column align-items-center text-white" href="/proyectoWT/models/horas/horas.php">
+              <i class="fa-solid fa-clock"></i>
+              Horas</a>
+          </li>
+        </ul>
+      </div>
+
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown" data-bs-theme="light">
+          <a class="nav-link text-white d-flex flex-column align-items-center dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="fa-stack">
+              <i class="fas fa-circle fa-stack-2x"></i>
+              <i class="fa-solid fa-user fa-stack-1x fa-inverse text-primary"></i>
+            </span>
+
+            <?php echo $_SESSION['usuario'] ?>
+          </a>
+
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+              <a href="#" class="dropdown-item">
+                <i class="fa-solid fa-user"></i>
+                <span class="ms-2">Ver Perfil</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="dropdown-item">
+                <i class="fa-solid fa-wrench"></i>
+                <span class="ms-2">Ajustes</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
+            <li>
+              <a href="/proyectoWT/cierreSesion.php" class="dropdown-item">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span class="ms-2">Cerrar sesión</span></a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </header>
+  <!-- FIN Header -->
+
+  <!-- Div con las cards de inicio -->
+  <div id="cards-inicio" class="container py-3">
+
+    <div class="row g-2 py-3">
+      <!-- Tarjeta PARTES -->
+      <div class="col-md-6">
+        <div class="card mb-4 shadow-lg text-bg-info text-light">
+          <div class="card-body d-flex align-items-center">
+            <i class="fa-solid fa-calendar-days fa-3x"></i>
+            <div class="flex-grow-1 text-end">
+              <h4><?php echo $cantidadPartesUsuarios ?></h4>
+              <p class="card-text">Partes realizados hasta el momento</p>
             </div>
-            <!-- Colapsado en tamaño LG -->
-            <div class="collapse navbar-collapse" id="navbarToggler">
-                <!-- Zona Accesos a CRUD USER -->
-                <ul class="navbar-nav">
-                    <li class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
-                        <div class="vr d-none d-lg-flex h-100 mx-lg-2 text-white"></div>
-                        <hr class="d-lg-none my-2 text-white-50">
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Partes de Trabajo</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Horas de Trabajo</a>
-                    </li>
-                </ul>
+          </div>
+        </div>
+      </div>
+      <!-- Tarjeta HORAS -->
+      <div class="col-md-6">
+        <div class="card mb-4 shadow-lg bg-warning text-light">
+          <div class="card-body d-flex align-items-center">
+            <i class="fa-solid fa-clock fa-3x"></i>
+            <div class="flex-grow-1 text-end">
+              <h4><?php echo $cantidadHorasUsuario ?></h4>
+              <p class="card-text">Total horas normales hasta el momento</p>
             </div>
-            <!-- Gestión del Usuario -->
-            <ul class="navbar-nav ms-md-auto">
-                <li class="nav-item dropdown" data-bs-theme="light">
-                    <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        <?php echo $usuario ?>
-                    </a>
-                    <ul class="dropdown-menu ">
-                        <li>
-                            <a href="#" class="dropdown-item d-flex align-items-start justify-content-between">
-                                <span class="ms-2">Ver Perfil</span>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li>
-                            <a href="#" class="dropdown-item d-flex align-items-start justify-content-between">
-                                <span class="ms-2">Ajustes</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <!-- <li class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
-                        <div class="vr d-none d-lg-flex h-100 mx-lg-2 text-white"></div>
-                        <hr class="d-lg-none my-2 text-white-50">
-                    </li> -->
-                <li class="nav-item">
-                    <a class="nav-link" href="cierreSesion.php">Cerrar Sesión</a>
-
-                </li>
-            </ul>
-
+          </div>
         </div>
-        </div>
-    </nav>
+      </div>
+    </div>
 
-    <body>
-
-        <center>
-            <h1>Mi usuario es <?php echo $usuario ?></h1>
-
-        </center>
-
-        <!-- Contenedor para cargar el contenido dinámico ## Inclusión por defecto la página de inicio-->
-        <div id="contenido-dinamico" class="container py-3">
-
-            <?php include 'models/panel/inicio.php'; ?>
-
+    <!-- Tarjetas sobre Proyectos -->
+    <div class="col-md-5" style="font-size: 0.9em;">
+      <div class="card border-success mb-4 shadow-lg">
+        <div class="card-header bg-success d-flex align-items-end text-light">
+          <span class="fa-stack fa-2x">
+            <i class="fas fa-circle fa-stack-2x"></i>
+            <i class="fa-solid fa-person-digging fa-stack-1x fa-inverse text-success"></i>
+          </span>
+          <div class="flex-grow-1 text-end">
+            <h4>Proyectos en curso</h4>
+          </div>
         </div>
 
-        <footer class="footer fixed-bottom bg-primary text-white">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <p>© WorkTrack 2024 | Todos los Derechos Reservados</p>
-                    </div>
-                    <div class="col-sm-6">
-                        <ul class="list-inline text-sm-end text-white">
-                            <li class="list-inline-item"><a class="nav-link"
-                                    href="mailto:smarrod687a@isidrodearceneguiycarmona.es" target="_blank"
-                                    rel="nooper noreferrer">
-                                    Contacta con nosotros <i class="fa-regular fa-envelope"></i></a></li>
-                            <li class="list-inline-item"><a class="nav-link" href="#"><i
-                                        class="fa-brands fa-whatsapp"></i></a></li>
-                            <li class="list-inline-item"><a class="nav-link" href="#"><i
-                                        class="fa-brands fa-facebook"></i></a></li>
-                            <li class="list-inline-item"><a class="nav-link" href="#"><i
-                                        class="fa-brands fa-instagram"></i></a></li>
-                            <li class="list-inline-item"><a class="nav-link" href="#"><i
-                                        class="fa-brands fa-x-twitter"></i></a></li>
-                            <li class="list-inline-item"><a class="nav-link" href="#">· Política de privacidad</a></li>
-                            <li class="list-inline-item"><a class="nav-link" href="#">· Términos de uso</a></li>
+        <?php
+        // Iterar sobre los resultados y mostrar tarjetas
+        foreach ($trabajadoresProyectos as $index => $proyecto) {
+          $nombreProyecto = htmlspecialchars($proyecto['nombreProyecto']);
+          $fechaInicio = htmlspecialchars($proyecto['fechaInicio']);
+          $fechaFin = htmlspecialchars($proyecto['fechaFin']);
+          $trabajadores = htmlspecialchars($proyecto['trabajadores']);
+          $totalHorasNormales = htmlspecialchars($proyecto['totalHorasNormales']);
+          $totalHorasExtras = htmlspecialchars($proyecto['totalHorasExtras']);
 
-                        </ul>
-                    </div>
+          // Verificar si hay trabajadores asociados al proyecto
+          if (!empty($trabajadores)) {
+            $trabajadoresString = $trabajadores;
+          } else {
+            $trabajadoresString = "Sin trabajadores asignados";
+          }
+
+          // Mostrar una línea divisoria entre los proyectos
+          if ($index > 0) {
+            echo '<hr>';
+          }
+
+          // Mostrar tarjeta
+          echo "
+        <div class='card-body d-flex align-items-center'>
+            <div class='flex-grow-1 text-start'>
+                <h4 class='text-success'>$nombreProyecto</h4>
+                <div class='card-text d-flex'>
+                  <div class='flex-grow-1 d-flex align-items-center'>
+                    <p class='card-text'><strong>Fecha de Inicio: </strong>$fechaInicio</p>
+                  </div>
+                  <div class='flex-grow-1 d-flex align-items-center justify-content-end'>
+                    <p class='card-text'><strong>Fecha de Fin: </strong>$fechaFin</p>
+                  </div>
                 </div>
+                <p class='card-text'><strong>Trabajadores: </strong>$trabajadoresString</p>
+                <p class='card-text'><strong>Total Horas Normales: </strong>$totalHorasNormales</p>
+                <p class='card-text'><strong>Total Horas Extras: </strong>$totalHorasExtras</p>
             </div>
-        </footer>
-
-
-        <!-- <script src="assets/js/bootstrap.bundle.min.js"></script> -->
-
-        <script>
-        // ## Función para cargar el contenido de INICIO
-        function cargarContenidoInicio() {
-            // # Realizar una solicitud AJAX para obtener el contenido de la página de inicio
-            fetch('./models/panel/inicio.php')
-                .then(response => response.text())
-                .then(data => {
-                    // Insertar el contenido en el contenedor dinámico
-                    document.getElementById('contenido-dinamico').innerHTML = data;
-                })
-                .catch(error => console.error('Error al cargar el contenido de la página de inicio:', error));
+        </div>";
         }
-        </script>
+        ?>
+      </div>
+    </div>
+  </div>
 
 
+  <!-- footer -->
+  <footer class="footer fixed-bottom bg-primary-footer text-white">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-6">
+          <p>© WorkTrack 2024 | Todos los Derechos Reservados</p>
+        </div>
+        <div class="col-sm-6">
+          <ul class="list-inline text-sm-end text-white">
+            <li class="list-inline-item">
+              <a class="nav-link" href="mailto:smarrod687a@isidrodearceneguiycarmona.es" target="_blank" rel="nooper noreferrer">
+                Contacta con nosotros <i class="fa-regular fa-envelope"></i></a>
+            </li>
+            <li class="list-inline-item">
+              <a class="nav-link" href="#"><i class="fa-brands fa-whatsapp"></i></a>
+            </li>
+            <li class="list-inline-item">
+              <a class="nav-link" href="#"><i class="fa-brands fa-facebook"></i></a>
+            </li>
+            <li class="list-inline-item">
+              <a class="nav-link" href="#"><i class="fa-brands fa-instagram"></i></a>
+            </li>
+            <li class="list-inline-item">
+              <a class="nav-link" href="#"><i class="fa-brands fa-x-twitter"></i></a>
+            </li>
+            <li class="list-inline-item">
+              <a class="nav-link" href="#">· Política de privacidad</a>
+            </li>
+          </ul>
+        </div>
+      </div>
 
-    </body>
+    </div>
+  </footer>
+
+  <script src="/proyectoWT/assets/js/bootstrap.bundle.min.js"></script>
+</body>
 
 </html>

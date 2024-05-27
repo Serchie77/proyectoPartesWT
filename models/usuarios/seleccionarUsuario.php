@@ -1,6 +1,4 @@
 <?php
-// -- # ELIMINA usuario # --
-
 // Conexión a la base de datos
 require '../../config/conexion.php';
 
@@ -8,7 +6,7 @@ require '../../config/conexion.php';
 $conexionbd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 // Recogida de datos del formulario y saneamiento
-$idUsuario = filter_input(INPUT_POST, 'idUsuario', FILTER_SANITIZE_STRING);
+$idUsuario = filter_input(INPUT_POST, 'idUsuario', FILTER_SANITIZE_NUMBER_INT);
 
 // Consulta base de datos
 $consulta = $conexionbd->prepare("SELECT * FROM usuarios WHERE idUsuario = :idUsuario LIMIT 1");
@@ -27,4 +25,3 @@ header('Content-Type: application/json');
 header( 'Cache-Control: no-cache, must-revalidate' );
 
 echo json_encode($usuario, JSON_UNESCAPED_UNICODE);
-?>

@@ -1,6 +1,16 @@
 <?php
 // Inicio de sesión
-session_start();
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+
+// ### Verificación de usuario autenticado # dan problemas las cookies
+// if (!isset($_SESSION['usuario'])) {
+//     header('Location: /proyectoWT/index.php');
+//     exit();
+// }
 
 // Conexión a la base de datos
 include_once 'config/conexion.php';
@@ -14,7 +24,7 @@ if (isset($_POST['usuario']) && isset($_POST['password'])) {
     $passwordSHA = hash('sha256', $password);
 
     // Preparar la consulta con parámetros
-    $consultaUsuarios = $conexionbd->prepare("SELECT * FROM usuarios WHERE usuario = :usuario AND password = :password");
+    $consultaUsuarios = $conexionbd->prepare("SELECT * FROM usuarios WHERE BINARY usuario = :usuario AND password = :password");
     $consultaUsuarios->bindParam(':usuario', $usuario);
     $consultaUsuarios->bindParam(':password', $passwordSHA);
     $consultaUsuarios->execute();
@@ -28,6 +38,8 @@ if (isset($_POST['usuario']) && isset($_POST['password'])) {
 
         // ## Guardar el nombre de usuario para luego mostrarlo
         $_SESSION['usuario'] = $usuario;
+        // ## Almacenar el ID del usuario en la sesión
+        $_SESSION['idUsuario'] = $resultado['idUsuario'];
 
         switch ($_SESSION['rol']) {
             case 1:
@@ -37,13 +49,11 @@ if (isset($_POST['usuario']) && isset($_POST['password'])) {
                 header('Location: userHome.php');
                 exit();
             default:
+                header('Location: index.php?error=Rol no reconocido');
+                exit();
         }
     } else {
-        // # Error de validación
-        // alerta();
-        // echo 'El usuario o contraseña no son válidos';
         header('Location: index.php?error=Datos incorrectos');
         exit();
     }
 }
-?>

@@ -2,18 +2,19 @@ proyecto/
 │
 ├── assets/
 │   ├── css/
-│   │   └── styles.css
+│   │   └── (estilos Bootstrap y Fontawesome)
 │   ├── img/
 │   │   └── (imágenes)
 │   └── js/
-│       └── (scripts JavaScript)
+│       └── (scripts JavaScript Bootstrap)
+│  
+├── bd/
+│   └── partes2024.sql
 │
 ├── config/
-│   ├── conexion.php
+│   └── conexion.php
 │
 ├── models/
-│   ├── panel/
-│   │   └── inicio.php
 │   ├── clientes/
 │   │   └── clientes.php (y todos los archivos para realizar el CRUD)
 │   ├── usuarios/
@@ -24,15 +25,19 @@ proyecto/
 │   │   └── partes.php (y todos los archivos para realizar el CRUD)
 │   ├── horas/
 │   │   └── horas.php (y todos los archivos para realizar el CRUD)
-│
-├── bd/
-│   └── partes2024.sql
+│   │ 
+│   ├── headerAdmin.php
+│   │
+│   ├── headerUser.php
+│   │
+│   └── footer.php
 │
 ├── index.php
 ├── sesion.php
 ├── cierreSesion.php
 ├── adminHome.php
-├── adminHome.php
+├── userHome.php
+├── consultaDatos.php
 └── estilos.css
 
 
@@ -65,3 +70,8 @@ pevema123
 Usuario2:::
 manupegil
 manuelpg123
+--
+Usuario3:::
+robertogama
+rogama123
+

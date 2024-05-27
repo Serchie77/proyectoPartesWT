@@ -1,7 +1,6 @@
-<!-- Recuperamos la conexión BD -->
 <?php
-// Inicio de sesión
-session_start();
+// Incluir el archivo de sesión
+require '../../sesion.php';
 
 // Conexión a la base de datos
 require '../../config/conexion.php';
@@ -11,11 +10,7 @@ $consultaProyecto = $conexionbd->prepare("SELECT proyectos.idProyecto, proyectos
     FROM proyectos INNER JOIN clientes ON proyectos.idCliente = clientes.idCliente
 ");
 $consultaProyecto->execute();
-/*
-// # Para mostrar la imagen o documento
-$dir = "imagen/";
-// # Faltaría incluir en la tabla el registro de la imagen en sí
-*/
+
 ?>
 
 <!DOCTYPE html>
@@ -30,10 +25,21 @@ $dir = "imagen/";
     <link rel="stylesheet" href="/proyectoWT/assets/css/all.min.css">
 </head>
 
+<header>
+    <?php
+    if ($_SESSION['rol'] == 1) {
+
+        require_once('../headerAdmin.php');
+    } elseif ($_SESSION['rol'] == 2) {
+        require_once('../headerUser.php');
+    }
+    ?>
+</header>
+
 <body>
     <!-- contenedor principal Proyectos-->
 
-    <div class="container py-3">
+    <div class="container py-4">
 
         <div class="card text-bg-info mb-3">
             <span class="placeholder-wave col-12 placeholder-lg bg-success">
@@ -61,12 +67,16 @@ $dir = "imagen/";
 
         <!-- botón con referencia -->
         <div class="d-grid col-3 mx-auto">
+        <?php if ($_SESSION['rol'] == 1) : ?>
             <a href="#" class="btn btn-outline-success p-1" data-bs-toggle="modal" data-bs-target="#nuevoProyectoModal"><i class="fa-solid fa-circle-plus"></i> Agregar Nuevo Proyecto</a>
+            <?php else : ?>
+                <button class='btn btn-outline-success p-1' onclick="alert('No tienes permisos, contacta con el administrador.'); return false;"><i class='fa-solid fa-circle-plus'></i> Agregar Nuevo Proyecto</button>
+            <?php endif; ?>
         </div>
 
         <!-- Tabla para mostrar datos PROYECTOS -->
         <div class="table-responsive-sm">
-            <table class="table table-sm table-over table-bordered mt-2">
+            <table class="table table-sm table-hover table-bordered mt-2" style="font-size: 0.8em;">
                 <!-- cabecera de la Tabla -->
                 <thead class="table-dark">
                     <tr>
@@ -81,29 +91,31 @@ $dir = "imagen/";
                 </thead>
                 <!-- cuerpo de la Tabla -->
                 <tbody class="table-success">
-                    <?php
-                    while ($registro = $consultaProyecto->fetch(PDO::FETCH_ASSOC)) {
-
-                        echo "<tr>
-                            <td class='table-dark'>{$registro['idProyecto']}</td>
-                            <td>{$registro['nombre']}</td>
-                            <td>{$registro['lugar']}</td>
-                            <td>{$registro['fechaInicio']}</td>
-                            <td>{$registro['fechaFin']}</td>
-                            <td>{$registro['nombreCliente']}</td>
-
+                    <?php while ($registro = $consultaProyecto->fetch(PDO::FETCH_ASSOC)) : ?>
+                        <tr>
+                            <td class='table-dark'><?= htmlspecialchars($registro['idProyecto']); ?></td>
+                            <td><?= htmlspecialchars($registro['nombre']); ?></td>
+                            <td><?= htmlspecialchars($registro['lugar']); ?></td>
+                            <td><?= htmlspecialchars($registro['fechaInicio']); ?></td>
+                            <td><?= htmlspecialchars($registro['fechaFin']); ?></td>
+                            <td><?= htmlspecialchars($registro['nombreCliente']); ?></td>
                             <td>
-                                <a href='#' class='btn btn-sm btn-warning' data-bs-toggle='modal' 
-                                data-bs-target='#editarProyectoModal' data-bs-id='{$registro['idProyecto']}'> <i class='fa-solid fa-pen-to-square'></i> Editar</a> 
-                        
-                                <a href='#' class='btn btn-sm btn-danger' data-bs-toggle='modal' 
-                                data-bs-target='#eliminarProyectoModal' data-bs-id='{$registro['idProyecto']}'> <i class='fa-solid fa-trash'></i> Eliminar</a>
+                                <?php if ($_SESSION['rol'] == 1) : ?>
+                                    <a href='#' class='btn btn-sm btn-warning' data-bs-toggle='modal' data-bs-target='#editarProyectoModal' data-bs-id='<?= htmlspecialchars($registro['idProyecto']); ?>'>
+                                        <i class='fa-solid fa-pen-to-square'></i>
+                                    </a>
+                                    <a href='#' class='btn btn-sm btn-danger' data-bs-toggle='modal' data-bs-target='#eliminarProyectoModal' data-bs-id='<?= htmlspecialchars($registro['idProyecto']); ?>'>
+                                        <i class='fa-solid fa-trash'></i>
+                                    </a>
+                                <?php else : ?>
+                                    <button class='btn btn-sm btn-warning' onclick="alert('No tienes permisos, contacta con el administrador.'); return false;"><i class='fa-solid fa-pen-to-square'></i></button>
+                                    <button class='btn btn-sm btn-danger' onclick="alert('No tienes permisos, contacta con el administrador.'); return false;"><i class='fa-solid fa-trash'></i></button>
+                                <?php endif; ?>
                             </td>
-                        <tr>";
-                    }
-                    ?>
-
+                        </tr>
+                    <?php endwhile; ?>
                 </tbody>
+
             </table>
         </div>
 
@@ -182,5 +194,10 @@ $dir = "imagen/";
 
     <script src="/proyectoWT/assets/js/bootstrap.bundle.min.js"></script>
 </body>
+<footer>
+    <?php
+    require_once('../footer.php');
+    ?>
+</footer>
 
 </html>

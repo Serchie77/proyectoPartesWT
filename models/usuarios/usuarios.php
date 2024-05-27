@@ -1,22 +1,33 @@
-<!-- Recuperamos la conexión BD -->
 <?php
-// Inicio de sesión
+// Incluir el archivo de sesión
 session_start();
+require '../../sesion.php';
 
 // Conexión a la base de datos
 require '../../config/conexion.php';
 
-// # Traer los registros para mostrarlos en la tabla juntandola con la tabla rol
-$consultaUsuario = $conexionbd->prepare("SELECT usuarios.idUsuario, usuarios.nombre, usuarios.apellidos, usuarios.direccion, usuarios.telefono, usuarios.email, usuarios.usuario, usuarios.password, rol.rol AS rol
-    FROM usuarios INNER JOIN rol ON usuarios.idRol = rol.idRol
+// Obtener el ID del usuario logueado
+$idUsuario = $_SESSION['idUsuario'];
+
+// # Traer los registros dependiendo del rol si es administrador (TODOS) si es usuario (SÓLO EL SUYO)
+if ($_SESSION['rol'] == 1) {
+
+    $consultaUsuario = $conexionbd->prepare("SELECT usuarios.idUsuario, usuarios.nombre, usuarios.apellidos, usuarios.direccion, usuarios.telefono, usuarios.email, usuarios.usuario, usuarios.password, rol.rol AS rol
+    FROM usuarios 
+    INNER JOIN rol ON usuarios.idRol = rol.idRol
 ");
 $consultaUsuario->execute();
-/*
-// # Para mostrar la imagen o documento
-$dir = "imagen/";
-// # Faltaría incluir en la tabla el registro de la imagen en sí
-*/
-
+    
+} else {
+    // Consulta SQL para obtener los registros del usuario logueado que no sea administrador
+    $consultaUsuario = $conexionbd->prepare("SELECT usuarios.idUsuario, usuarios.nombre, usuarios.apellidos, usuarios.direccion, usuarios.telefono, usuarios.email, usuarios.usuario, usuarios.password, rol.rol AS rol
+    FROM usuarios 
+    INNER JOIN rol ON usuarios.idRol = rol.idRol
+    WHERE usuarios.idUsuario = :idUsuario
+");
+    $consultaUsuario->bindParam(':idUsuario', $idUsuario);
+    $consultaUsuario->execute();
+}
 // ## Función para ocultar la contraseña
 function ocultarPassword($password)
 {
@@ -37,14 +48,25 @@ function ocultarPassword($password)
     <link rel="stylesheet" href="/proyectoWT/assets/css/all.min.css">
 </head>
 
+<header>
+    <?php
+    if ($_SESSION['rol'] == 1) {
+
+        require_once('../headerAdmin.php');
+    } elseif ($_SESSION['rol'] == 2) {
+        require_once('../headerUser.php');
+    }
+    ?>
+</header>
+
 <body>
     <!-- contenedor principal usuarios-->
 
-    <div class="container py-3">
+    <div class="container py-4">
 
-        <div class="card text-bg-info mb-3">
-            <span class="placeholder-wave col-12 placeholder-lg bg-info">
-                <h2 class="card-header text-center text-light"><i class="fa-solid fa-users"></i></i> Usuarios</h2>
+        <div class="card text-bg-danger mb-3">
+            <span class="placeholder-wave col-12 placeholder-lg bg-danger">
+                <h2 class="card-header text-center text-light"><i class="fa-solid fa-users"></i> Usuarios</h2>
             </span>
         </div>
         <!-- Mensaje de advertencia -->
@@ -67,12 +89,16 @@ function ocultarPassword($password)
 
         <!-- botón con referencia -->
         <div class="d-grid col-3 mx-auto">
-            <a href="#" class="btn btn-outline-success p-1" data-bs-toggle="modal" data-bs-target="#nuevoUsuarioModal"><i class="fa-solid fa-circle-plus"></i> Agregar Nuevo Usuario</a>
+            <?php if ($_SESSION['rol'] == 1) : ?>
+                <a href="#" class="btn btn-outline-success p-1" data-bs-toggle="modal" data-bs-target="#nuevoUsuarioModal"><i class="fa-solid fa-circle-plus"></i> Agregar Nuevo Usuario</a>
+            <?php else : ?>
+                <button class='btn btn-outline-success p-1' onclick="alert('No tienes permisos, contacta con el administrador.'); return false;"><i class='fa-solid fa-circle-plus'></i> Agregar Nuevo Usuario</button>
+            <?php endif; ?>
         </div>
 
         <!-- Tabla para mostrar datos usuarios -->
         <div class="table-responsive-sm">
-            <table class="table table-sm table-over table-bordered mt-2" style="font-size: 0.8em;">
+            <table class="table table-sm table-hover table-bordered mt-2" style="font-size: 0.8em;">
                 <!-- cabecera de la Tabla -->
                 <thead class="table-dark">
                     <tr>
@@ -89,31 +115,29 @@ function ocultarPassword($password)
                     </tr>
                 </thead>
                 <!-- cuerpo de la Tabla -->
-                <tbody class="table-info">
-                    <?php
-                    while ($registro = $consultaUsuario->fetch(PDO::FETCH_ASSOC)) {
-                        echo "<tr>
-                            <td class='table-dark' style='font-size: 0.9em;'>{$registro['idUsuario']}</td>
-                            <td >{$registro['nombre']}</td>
-                            <td >{$registro['apellidos']}</td>
-                            <td >{$registro['direccion']}</td>
-                            <td >{$registro['telefono']}</td>
-                            <td >{$registro['email']}</td>
-                            <td >{$registro['usuario']}</td>
-                            <td >" . ocultarPassword($registro['password']) . "</td>
-                            <td >{$registro['rol']}</td>
-
+                <tbody class="table-danger">
+                    <?php while ($registro = $consultaUsuario->fetch(PDO::FETCH_ASSOC)) : ?>
+                        <tr>
+                            <td class="table-dark" style="font-size: 0.9em;"><?= $registro['idUsuario'] ?></td>
+                            <td><?= $registro['nombre'] ?></td>
+                            <td><?= $registro['apellidos'] ?></td>
+                            <td><?= $registro['direccion'] ?></td>
+                            <td><?= $registro['telefono'] ?></td>
+                            <td><?= $registro['email'] ?></td>
+                            <td><?= $registro['usuario'] ?></td>
+                            <td><?= ocultarPassword($registro['password']) ?></td>
+                            <td><?= $registro['rol'] ?></td>
                             <td>
-                                <a href='#' class='btn btn-sm btn-warning' data-bs-toggle='modal' 
-                                data-bs-target='#editarUsuarioModal' data-bs-id='{$registro['idUsuario']}'> <i class='fa-solid fa-pen-to-square'></i> Editar</a> 
-                        
-                                <a href='#' class='btn btn-sm btn-danger' data-bs-toggle='modal' 
-                                data-bs-target='#eliminarUsuarioModal' data-bs-id='{$registro['idUsuario']}'> <i class='fa-solid fa-trash'></i> Eliminar</a>
+                                <?php if ($_SESSION['rol'] == 1) : ?>
+                                    <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editarUsuarioModal" data-bs-id="<?= $registro['idUsuario'] ?>"><i class="fa-solid fa-pen-to-square"></i></a>
+                                    <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarUsuarioModal" data-bs-id="<?= $registro['idUsuario'] ?>"><i class="fa-solid fa-trash"></i></a>
+                                <?php else : ?>
+                                    <button class='btn btn-sm btn-warning' onclick="alert('No tienes permisos, contacta con el administrador.'); return false;"><i class='fa-solid fa-pen-to-square'></i></button>
+                                    <button class='btn btn-sm btn-danger' onclick="alert('No tienes permisos, contacta con el administrador.'); return false;"><i class='fa-solid fa-trash'></i></button>
+                                <?php endif; ?>
                             </td>
-                        <tr>";
-                    }
-                    ?>
-
+                        </tr>
+                    <?php endwhile; ?>
                 </tbody>
             </table>
         </div>
@@ -199,5 +223,10 @@ function ocultarPassword($password)
 
     <script src="/proyectoWT/assets/js/bootstrap.bundle.min.js"></script>
 </body>
+<footer>
+    <?php
+    require_once('../footer.php');
+    ?>
+</footer>
 
 </html>

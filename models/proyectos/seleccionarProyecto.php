@@ -27,4 +27,4 @@ header('Content-Type: application/json');
 header( 'Cache-Control: no-cache, must-revalidate' );
 
 echo json_encode($proyecto, JSON_UNESCAPED_UNICODE);
-?>
+

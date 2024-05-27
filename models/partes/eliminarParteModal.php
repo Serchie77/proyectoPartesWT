@@ -1,6 +1,4 @@
-<!-- Modal -->
 <div class="modal fade" id="eliminarParteModal" tabindex="-1" aria-labelledby="eliminarParteModalLabel" aria-hidden="true">
-    <!-- modal-dialogo tipo sm (small)-->
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header bg-danger">
@@ -8,22 +6,23 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                ¿Realmente desea eliminar?
-                <div class="modal-footer">
-                    <!-- creación el formulario para ELIMINAR de la BD -->
-                    <form action="eliminarParte.php" method="POST">
-                        <!-- creación id para saber qué registro se eliminará -->
-                        <input type="hidden" name="idParte" id="idParte">
+                <p>¿Realmente desea eliminar?</p>
+                <!-- Formulario para eliminar de la BD -->
+                <form action="/proyectoWT/models/partes/eliminarParte.php" method="POST">
+                    <!-- Campo oculto para saber qué registro se eliminará -->
+                    <input type="hidden" name="idParte" id="idParte">
 
-                        <!-- Botones -->
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i> Cancelar</button>
-                        <button type="submit" class="btn btn-success"><i class="fa-solid fa-eraser"></i> Confirmar</button>
-                    </form>
-
-                </div>
-
+                    <!-- Botones -->
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fa-solid fa-xmark"></i> Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fa-solid fa-trash-alt"></i> Confirmar
+                        </button>
+                    </div>
+                </form>
             </div>
-
         </div>
     </div>
 </div>
