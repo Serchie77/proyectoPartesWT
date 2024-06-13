@@ -1,3 +1,7 @@
+WORKTRACK - PRIMER PROYECTO SOBRE PARTES DE TRABAJO DE UNA EMPRESA. FUNCIONAL PARA ROL DE ADMINISTRADOR Y ROL DE USUARIO.
+REALIZADO EN HTML, CSS, JAVASCRIPT, PHP Y BOOTSTRAP. NO SE USA NINGÚN FRAMEWORK.
+PROYECTO PENDIENTE DE MEJORAS FUTURAS.
+
 proyecto/
 │
 ├── assets/
@@ -57,21 +61,22 @@ Explicación de la estructura:
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 * * ACCESO COMO ADMIN * *
+Usuario1:::
 sergioadmin
 sergioadmin123
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 * * ACCESO COMO USUARIOS * * Estos son algunos usuarios de prueba
-Usuario1:::
+Usuario2:::
 pepevema
 pevema123
 --
-Usuario2:::
+Usuario3:::
 manupegil
 manuelpg123
 --
-Usuario3:::
+Usuario4:::
 robertogama
 rogama123
 

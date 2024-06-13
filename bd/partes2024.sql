@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-05-2024 a las 18:57:10
+-- Tiempo de generación: 13-06-2024 a las 12:25:53
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -42,7 +42,7 @@ CREATE TABLE `clientes` (
 --
 
 INSERT INTO `clientes` (`idCliente`, `nombre`, `apellidos`, `email`, `telefono`, `direccion`, `comentarios`) VALUES
-(1, 'Antonio', 'López Ramírez', 'anlora@mail.com', '666111333', 'Calle larga, 123', 'Es una prueba 1'),
+(1, 'Antonio', 'López Ramírez', 'anlora@mail.com', '666111333', 'Calle larga, 123', 'Es una prueba 1 '),
 (2, 'Ángel', 'Jiménez', 'fuljim@mail.es', '656011111', 'Calle Méndez Núñez, 55 B', 'Pedir DNI'),
 (4, 'Fernando', 'Borrego Manzano', 'anmaboma@gmail.com', '666878787', 'Plaza Nueva, 43', 'Direccion'),
 (5, 'Manuel', 'Gutiérrez Carmona', 'magucar@gmail.es', '666444333', 'Calle Mesones', 'creado desde clientes directamente'),
@@ -74,7 +74,8 @@ CREATE TABLE `partes` (
 INSERT INTO `partes` (`idParte`, `fechaInicio`, `fechaFin`, `totalHorasNormales`, `totalHorasExtras`, `horasViaje`, `comentarios`, `idUsuario`, `idProyecto`) VALUES
 (1, '2024-04-21', '2024-06-24', 0.00, 0.00, 2.00, 'Trabajos de soldadura', 2, 1),
 (2, '2024-05-01', '2024-06-10', 0.00, 0.00, 0.00, 'Trabajos de fontanería', 3, 1),
-(3, '2024-05-22', '0000-00-00', 8.00, 0.00, 0.00, 'Trabajos mantenimiento', 5, 2);
+(3, '2024-05-22', '0000-00-00', 20.00, 0.00, 0.00, 'Trabajos mantenimiento', 5, 2),
+(6, '2024-06-12', '2024-06-12', 4.00, 0.00, 0.00, 'Refuerzo de baranda del patio', 2, 3);
 
 -- --------------------------------------------------------
 
@@ -100,7 +101,8 @@ INSERT INTO `parteshoras` (`idParteHora`, `fecha`, `horasNormales`, `horasExtras
 (2, '2024-05-14', 8.00, 1.00, 1, 2),
 (4, '2024-05-22', 8.00, 1.00, 2, 5),
 (5, '2024-06-03', 8.00, 0.00, 3, 3),
-(6, '2024-05-22', 8.00, 0.00, 3, 3);
+(6, '2024-05-22', 8.00, 0.00, 3, 3),
+(9, '2024-06-12', 3.00, 0.00, 6, 2);
 
 --
 -- Disparadores `parteshoras`
@@ -195,7 +197,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`idUsuario`, `usuario`, `password`, `nombre`, `apellidos`, `direccion`, `telefono`, `email`, `idRol`) VALUES
-(1, 'sergioadmin', 'cc4f3abf9b752533dcecd12049e71fdfc5f54c8c8d5cada48a70d120095c9c77', 'Sergio', 'Martínez Rodríguez', 'Calle 19 - 41620 Sevilla', '600123456', 'sergio@gmail.com', 1),
+(1, 'sergioadmin', 'cc4f3abf9b752533dcecd12049e71fdfc5f54c8c8d5cada48a70d120095c9c77', 'Sergio', 'Martínez Rodríguez', 'Calle ES - 41620 Sevilla', '600123456', 'sergio@gmail.com', 1),
 (2, 'pepevema', '0ef3ed934c6b80c9e3eb60fe541026868115e949e985b09a2b5c40260336c0a5', 'Pepe', 'Vega Marín', 'Calle Alcantarilla, 10241002 Sevilla', '654123987', 'pepevema@gmail.com', 2),
 (3, 'manupegil', '65557960a2c2e25eed9b0c4f1f39508d2a1c2eca4c410712eb25e06e835e6cd4', 'Manuel', 'Pérez Gil', 'Calle Avendaño, 49\r\n04271 Lubrín\r\nAlmería', '766452718', 'mapegil@gmail.com', 2),
 (5, 'robertogama', 'b54851328167dff4c4f4cfc7e59ae4f16afbb4dab2b287873905faa9a0984d20', 'Roberto', 'García Márquez', 'Torres Altas, 99 - 41010 SEVILLA', '666012965', 'rogama@mail.com', 2);
@@ -260,13 +262,13 @@ ALTER TABLE `clientes`
 -- AUTO_INCREMENT de la tabla `partes`
 --
 ALTER TABLE `partes`
-  MODIFY `idParte` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idParte` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `parteshoras`
 --
 ALTER TABLE `parteshoras`
-  MODIFY `idParteHora` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `idParteHora` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `proyectos`

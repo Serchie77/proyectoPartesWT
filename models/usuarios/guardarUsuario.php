@@ -20,7 +20,8 @@ $idRol = filter_input(INPUT_POST, 'idRol', FILTER_SANITIZE_NUMBER_INT); // Se as
 
 try {
     // Preparación de la consulta
-    $insertarUsuario = $conexionbd->prepare("INSERT INTO usuarios (nombre, apellidos, direccion, telefono, email, usuario, password, idRol) VALUES (:nombre, :apellidos, :direccion, :telefono, :email, :usuario, :password, :idRol)");
+    $insertarUsuario = $conexionbd->prepare("INSERT INTO usuarios (nombre, apellidos, direccion, telefono, email, usuario, password, idRol)
+        VALUES (:nombre, :apellidos, :direccion, :telefono, :email, :usuario, :password, :idRol)");
     // Enlaces de parámetros
     $insertarUsuario->bindParam(':nombre', $nombre);
     $insertarUsuario->bindParam(':apellidos', $apellidos);

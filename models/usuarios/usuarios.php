@@ -53,7 +53,9 @@ function ocultarPassword($password)
     if ($_SESSION['rol'] == 1) {
 
         require_once('../headerAdmin.php');
+
     } elseif ($_SESSION['rol'] == 2) {
+        
         require_once('../headerUser.php');
     }
     ?>
