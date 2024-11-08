@@ -2,6 +2,9 @@ WORKTRACK - PRIMER PROYECTO SOBRE PARTES DE TRABAJO DE UNA EMPRESA. FUNCIONAL PA
 REALIZADO EN HTML, CSS, JAVASCRIPT, PHP Y BOOTSTRAP. NO SE USA NINGÚN FRAMEWORK.
 PROYECTO PENDIENTE DE MEJORAS FUTURAS.
 
+
+![](https://github.com/Serchie77/proyectoPartesWT/blob/main/WTInicio.png)
+
 proyecto/
 │
 ├── assets/
@@ -84,4 +87,3 @@ rogama123
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-![](https://github.com/Serchie77/proyectoPartesWT/blob/main/WTInicio.png)
