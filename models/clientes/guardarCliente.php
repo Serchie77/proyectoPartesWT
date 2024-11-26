@@ -49,5 +49,5 @@ try {
 
 // Redirigir a adminHome.php con una variable de sesión indicando que se debe cargar la sección de clientes
 // $_SESSION['ultimaSeccion'] = 'clientes';
-header('Location: /proyectoWT/models/clientes/clientes.php');
+header('Location: clientes.php');
 exit();

@@ -42,5 +42,5 @@ try {
 }
 
 // Redirección a la página principal
-header('Location: /proyectoWT/models/horas/horas.php');
+header('Location: horas.php');
 exit();

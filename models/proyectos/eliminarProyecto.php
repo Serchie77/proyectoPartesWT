@@ -28,5 +28,5 @@ try {
    $_SESSION['mensaje'] = "Error: " . $e->getMessage();
 }
 
-header('Location: /proyectoWT/models/proyectos/proyectos.php');
+header('Location: proyectos.php');
 exit();

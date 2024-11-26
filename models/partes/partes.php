@@ -50,8 +50,8 @@ $consultaParte->execute();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WT | Partes</title>
 
-    <link rel="stylesheet" href="/proyectoWT/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/proyectoWT/assets/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../assets/css/all.min.css">
 </head>
 
 <header>
@@ -226,7 +226,7 @@ $consultaParte->execute();
 
     </div>
 
-    <script src="/proyectoWT/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/bootstrap.bundle.min.js"></script>
 </body>
 <footer>
     <?php

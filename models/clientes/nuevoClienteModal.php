@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">
                 <!-- creamos el formulario para agregar a la BD || enctype... para reconocer archivos-->
-                <form action="/proyectoWT/models/clientes/guardarCliente.php" method="POST" enctype="multipart/form-data">
+                <form action="guardarCliente.php" method="POST" enctype="multipart/form-data">
 
                     <div class="row">
                         <div class="col-md-6 mb-3">

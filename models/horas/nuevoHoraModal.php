@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
                 <!-- creamos el formulario para agregar a la BD || enctype... para reconocer archivos-->
-                <form action="/proyectoWT/models/horas/guardarHora.php" method="POST" enctype="multipart/form-data">
+                <form action="guardarHora.php" method="POST" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="fecha" class="form-label">Introduce la fecha: </label>
                         <input type="date" name="fecha" id="fecha" class="form-control form-control-sm" required>

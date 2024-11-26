@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
                 <!-- Formulario para recoger datos y actualizar en la BD -->
-                <form action="/proyectoWT/models/clientes/actualizarCliente.php" method="POST" enctype="multipart/form-data">
+                <form action="actualizarCliente.php" method="POST" enctype="multipart/form-data">
                     <!-- Campo oculto para el ID del cliente -->
                     <input type="hidden" name="idCliente" id="idCliente">
                     

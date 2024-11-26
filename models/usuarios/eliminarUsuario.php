@@ -32,5 +32,5 @@ try {
 }
 
 // Redirecciona a la página de usuarios
-header('Location: /proyectoWT/models/usuarios/usuarios.php');
+header('Location: usuarios.php');
 exit();

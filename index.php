@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="es">
-    
 <?php
 
 // Inicia la sesión
@@ -22,13 +19,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 ?>
 
-
+<!DOCTYPE html>
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="Autor" content="Sergio Martínez" />
-  <meta name="Description" content="Elaboración de partes de trabajo para una empresa" />
+  <meta name="Description" content="Elaboración de partes de trabajo para empresas" />
   <meta name="keywords" content="HTML, CSS, PHP, JavaScript" />
     <title>WT | Inicio de sesión</title>
     <!-- Favicons -->
@@ -66,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="submit"><i class="fa-solid fa-right-to-bracket"></i> Entrar
             </button>
             <br>
-            <p><a href="mailto:smarrod687a@isidrodearceneguiycarmona.es" target="_blank" rel="nooper noreferrer">Solicita aquí sus credenciales</a></p>
+            <p><a href="mailto:semaro1977@gmail.com" target="_blank" rel="nooper noreferrer">Solicita aquí sus credenciales</a></p>
         </div>
     </form>
     <script>
@@ -88,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         });
     </script>
-    <script src="/proyectoWT/assets/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>

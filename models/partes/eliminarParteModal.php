@@ -8,7 +8,7 @@
             <div class="modal-body">
                 <p>¿Realmente desea eliminar?</p>
                 <!-- Formulario para eliminar de la BD -->
-                <form action="/proyectoWT/models/partes/eliminarParte.php" method="POST">
+                <form action="eliminarParte.php" method="POST">
                     <!-- Campo oculto para saber qué registro se eliminará -->
                     <input type="hidden" name="idParte" id="idParte">
 

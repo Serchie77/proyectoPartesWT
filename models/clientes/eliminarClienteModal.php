@@ -11,7 +11,7 @@
             </div>
             <div class="modal-footer">
                 <!-- creamos el formulario para ELIMINAR de la BD -->
-                <form action="/proyectoWT/models/clientes/eliminarCliente.php" method="POST">
+                <form action="eliminarCliente.php" method="POST">
                     <!-- creación id para saber qué registro se eliminará -->
                     <input type="hidden" name="idCliente" id="idCliente">
                     <!-- Botones -->

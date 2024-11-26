@@ -12,7 +12,7 @@
                 ¿Realmente desea eliminar?
                 <div class="modal-footer">
                     <!-- Formulario para eliminar de la base de datos -->
-                    <form action="/proyectoWT/models/usuarios/eliminarUsuario.php" method="POST">
+                    <form action="eliminarUsuario.php" method="POST">
                         <!-- ID del registro a eliminar -->
                         <input type="hidden" name="idUsuario" id="idUsuario">
 

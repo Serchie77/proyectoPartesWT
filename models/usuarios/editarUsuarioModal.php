@@ -9,7 +9,7 @@
 
             <div class="modal-body">
                 <!-- creamos el formulario para -recoger datos- a la BD || enctype... para reconocer archivos-->
-                <form action="/proyectoWT/models/usuarios/actualizarUsuario.php" method="POST" enctype="multipart/form-data">
+                <form action="actualizarUsuario.php" method="POST" enctype="multipart/form-data">
                     <!-- creación id para saber qué registro se editará -->
                     <input type="hidden" name="idUsuario" id="idUsuario">
                     <div class="row">

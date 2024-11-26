@@ -8,7 +8,7 @@
 
             <div class="modal-body">
                 <!-- Formulario para actualizar datos -->
-                <form action="/proyectoWT/models/horas/actualizarHora.php" method="POST" enctype="multipart/form-data">
+                <form action="actualizarHora.php" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="idParteHora" id="idParteHora">
 
                     <div class="mb-3">

@@ -60,5 +60,5 @@ try {
     $_SESSION['mensaje'] = "Error: " . $e->getMessage();
 }
 
-header('Location: /proyectoWT/models/usuarios/usuarios.php');
+header('Location: usuarios.php');
 exit();

@@ -11,7 +11,7 @@
             </div>
             <div class="modal-footer">
                 <!-- creamos el formulario para ELIMINAR de la BD -->
-                <form action="/proyectoWT/models/horas/eliminarHora.php" method="POST">
+                <form action="eliminarHora.php" method="POST">
                     <!-- creación id para saber qué registro se eliminará -->
                     <input type="hidden" name="idParteHora" id="idParteHora">
                     <!-- Botones -->

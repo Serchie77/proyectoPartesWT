@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
                 <!-- Formulario para actualizar datos -->
-                <form action="/proyectoWT/models/partes/actualizarParte.php" method="POST" enctype="multipart/form-data">
+                <form action="actualizarParte.php" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="idParte" id="idParte">
                     <div class="row">
                         <div class="col-md-6 mb-3">

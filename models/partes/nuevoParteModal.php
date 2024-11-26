@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">
                 <!-- Formulario para agregar a la BD -->
-                <form action="/proyectoWT/models/partes/guardarParte.php" method="POST" enctype="multipart/form-data">
+                <form action="guardarParte.php" method="POST" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="fechaInicio" class="form-label">Fecha Inicio Trabajo:</label>

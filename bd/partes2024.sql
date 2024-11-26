@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 13-06-2024 a las 12:25:53
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.0.30
+-- Servidor: sql112.infinityfree.com
+-- Tiempo de generación: 26-11-2024 a las 06:46:30
+-- Versión del servidor: 10.6.19-MariaDB
+-- Versión de PHP: 7.2.22
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -18,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `partes2024`
+-- Base de datos: `if0_37658870_partes2024`
 --
 
 -- --------------------------------------------------------
@@ -72,18 +73,18 @@ CREATE TABLE `partes` (
 --
 
 INSERT INTO `partes` (`idParte`, `fechaInicio`, `fechaFin`, `totalHorasNormales`, `totalHorasExtras`, `horasViaje`, `comentarios`, `idUsuario`, `idProyecto`) VALUES
-(1, '2024-04-21', '2024-06-24', 0.00, 0.00, 2.00, 'Trabajos de soldadura', 2, 1),
-(2, '2024-05-01', '2024-06-10', 0.00, 0.00, 0.00, 'Trabajos de fontanería', 3, 1),
-(3, '2024-05-22', '0000-00-00', 20.00, 0.00, 0.00, 'Trabajos mantenimiento', 5, 2),
-(6, '2024-06-12', '2024-06-12', 4.00, 0.00, 0.00, 'Refuerzo de baranda del patio', 2, 3);
+(1, '2024-04-21', '2024-06-24', '0.00', '0.00', '2.00', 'Trabajos de soldadura', 2, 1),
+(2, '2024-05-01', '2024-06-10', '0.00', '0.00', '0.00', 'Trabajos de fontanería', 3, 1),
+(3, '2024-05-22', '0000-00-00', '20.00', '0.00', '0.00', 'Trabajos mantenimiento', 5, 2),
+(6, '2024-06-12', '2024-06-12', '4.00', '0.00', '0.00', 'Refuerzo de baranda del patio', 2, 3);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `parteshoras`
+-- Estructura de tabla para la tabla `partesHoras`
 --
 
-CREATE TABLE `parteshoras` (
+CREATE TABLE `partesHoras` (
   `idParteHora` int(11) NOT NULL,
   `fecha` date DEFAULT NULL,
   `horasNormales` decimal(5,2) DEFAULT NULL,
@@ -93,43 +94,16 @@ CREATE TABLE `parteshoras` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `parteshoras`
+-- Volcado de datos para la tabla `partesHoras`
 --
 
-INSERT INTO `parteshoras` (`idParteHora`, `fecha`, `horasNormales`, `horasExtras`, `idParte`, `idUsuario`) VALUES
-(1, '2024-05-13', 8.00, 0.00, 1, 2),
-(2, '2024-05-14', 8.00, 1.00, 1, 2),
-(4, '2024-05-22', 8.00, 1.00, 2, 5),
-(5, '2024-06-03', 8.00, 0.00, 3, 3),
-(6, '2024-05-22', 8.00, 0.00, 3, 3),
-(9, '2024-06-12', 3.00, 0.00, 6, 2);
-
---
--- Disparadores `parteshoras`
---
-DELIMITER $$
-CREATE TRIGGER `calcularHorasTotales` AFTER INSERT ON `parteshoras` FOR EACH ROW BEGIN
-    DECLARE totalHorasNormales DECIMAL(5,2);
-    DECLARE totalHorasExtras DECIMAL(5,2);
-    DECLARE totalHoras DECIMAL(5,2);
-
-    -- Obtener las horas normales y extras totales del parte
-    SELECT SUM(horasNormales), SUM(horasExtras)
-    INTO totalHorasNormales, totalHorasExtras
-    FROM partesHoras
-    WHERE idParte = NEW.idParte;
-
-    -- Calcular las horas totales
-    SET totalHoras = totalHorasNormales + totalHorasExtras;
-
-    -- Actualizar el parte con las horas totales calculadas
-UPDATE partes
-SET totalHorasNormales = totalHorasNormales, totalHorasExtras = totalHorasExtras
-WHERE idParte = NEW.idParte;
-
-END
-$$
-DELIMITER ;
+INSERT INTO `partesHoras` (`idParteHora`, `fecha`, `horasNormales`, `horasExtras`, `idParte`, `idUsuario`) VALUES
+(1, '2024-05-13', '8.00', '0.00', 1, 2),
+(2, '2024-05-14', '8.00', '1.00', 1, 2),
+(4, '2024-05-22', '8.00', '1.00', 2, 5),
+(5, '2024-06-03', '8.00', '0.00', 3, 3),
+(6, '2024-05-22', '8.00', '0.00', 3, 3),
+(9, '2024-06-12', '3.00', '0.00', 6, 2);
 
 -- --------------------------------------------------------
 
@@ -221,9 +195,9 @@ ALTER TABLE `partes`
   ADD KEY `idProyecto` (`idProyecto`);
 
 --
--- Indices de la tabla `parteshoras`
+-- Indices de la tabla `partesHoras`
 --
-ALTER TABLE `parteshoras`
+ALTER TABLE `partesHoras`
   ADD PRIMARY KEY (`idParteHora`),
   ADD KEY `idParte` (`idParte`),
   ADD KEY `idUsuario` (`idUsuario`);
@@ -265,9 +239,9 @@ ALTER TABLE `partes`
   MODIFY `idParte` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT de la tabla `parteshoras`
+-- AUTO_INCREMENT de la tabla `partesHoras`
 --
-ALTER TABLE `parteshoras`
+ALTER TABLE `partesHoras`
   MODIFY `idParteHora` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
@@ -300,11 +274,11 @@ ALTER TABLE `partes`
   ADD CONSTRAINT `partes_ibfk_3` FOREIGN KEY (`idProyecto`) REFERENCES `proyectos` (`idProyecto`);
 
 --
--- Filtros para la tabla `parteshoras`
+-- Filtros para la tabla `partesHoras`
 --
-ALTER TABLE `parteshoras`
-  ADD CONSTRAINT `parteshoras_ibfk_1` FOREIGN KEY (`idParte`) REFERENCES `partes` (`idParte`),
-  ADD CONSTRAINT `parteshoras_ibfk_2` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`idUsuario`);
+ALTER TABLE `partesHoras`
+  ADD CONSTRAINT `partesHoras_ibfk_1` FOREIGN KEY (`idParte`) REFERENCES `partes` (`idParte`),
+  ADD CONSTRAINT `partesHoras_ibfk_2` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`idUsuario`);
 
 --
 -- Filtros para la tabla `proyectos`

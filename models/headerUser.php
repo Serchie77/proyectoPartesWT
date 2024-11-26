@@ -6,14 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>User Home | WorkTrack</title>
   <!-- Favicons -->
-  <link rel="icon" href="/proyectoWT/assets/img/Logo_WT.png" type="image/png" />
+  <link rel="icon" href="../assets/img/Logo_WT.png" type="image/png" />
   <!-- GOOGLE FONTS -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
   <!-- FONTAWESOME & BOOTSTRAP -->
-  <link rel="stylesheet" href="/proyectoWT/assets/css/bootswatch-cerulean/bootstrap.min.css">
-  <link rel="stylesheet" href="/proyectoWT/assets/css/all.min.css" />
+  <link rel="stylesheet" href="../assets/css/bootswatch-cerulean/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/css/all.min.css" />
 </head>
 <!--  -->
 <style>
@@ -43,8 +43,8 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand" href="/proyectoWT/userHome.php">
-        <img src="/proyectoWT/assets/img/Logo_WT.png" alt="Logo WorkTrack" width="60" height="60" class="d-inline-block" />
+      <a class="navbar-brand" href="../../userHome.php">
+        <img src="../../assets/img/Logo_WT.png" alt="Logo WorkTrack" width="60" height="60" class="d-inline-block" />
         Inicio
       </a>
     </div>
@@ -52,28 +52,28 @@
     <div class="collapse navbar-collapse justify-content-center" id="navbarToggler">
       <ul class="navbar-nav mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link d-flex flex-column align-items-center text-white" href="/proyectoWT/models/clientes/clientes.php">
+          <a class="nav-link d-flex flex-column align-items-center text-white" href="../clientes/clientes.php">
             <i class="fa-solid fa-briefcase"></i>
             Clientes
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link d-flex flex-column align-items-center text-white" href="/proyectoWT/models/proyectos/proyectos.php">
+          <a class="nav-link d-flex flex-column align-items-center text-white" href="../proyectos/proyectos.php">
             <i class="fa-solid fa-city"></i>
             Proyectos</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link d-flex flex-column align-items-center text-white" href="/proyectoWT/models/usuarios/usuarios.php">
+          <a class="nav-link d-flex flex-column align-items-center text-white" href="../usuarios/usuarios.php">
             <i class="fa-solid fa-users"></i>
             Usuarios</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link d-flex flex-column align-items-center text-white" href="/proyectoWT/models/partes/partes.php">
+          <a class="nav-link d-flex flex-column align-items-center text-white" href="../partes/partes.php">
             <i class="fa-solid fa-calendar-days"></i>
             Partes</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link d-flex flex-column align-items-center text-white" href="/proyectoWT/models/horas/horas.php">
+          <a class="nav-link d-flex flex-column align-items-center text-white" href="../horas/horas.php">
             <i class="fa-solid fa-clock"></i>
             Horas</a>
         </li>
@@ -108,7 +108,7 @@
             <hr class="dropdown-divider" />
           </li>
           <li>
-            <a href="/proyectoWT/cierreSesion.php" class="dropdown-item">
+            <a href="../../cierreSesion.php" class="dropdown-item">
               <i class="fa-solid fa-right-from-bracket"></i>
               <span class="ms-2">Cerrar sesión</span></a>
           </li>

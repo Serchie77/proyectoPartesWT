@@ -23,9 +23,9 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WT | Clientes</title>
 
-    <!-- <link rel="stylesheet" href="/proyectoWT/assets/css/bootswatch-spacelab/bootstrap.min.css"> -->
-    <link rel="stylesheet" href="/proyectoWT/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/proyectoWT/assets/css/all.min.css">
+    <!-- <link rel="stylesheet" href="../../assets/css/bootswatch-spacelab/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../assets/css/all.min.css">
 </head>
 
 <header>
@@ -172,7 +172,7 @@ try {
         require_once('../footer.php');
         ?>
     </footer>
-    <script src="/proyectoWT/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
